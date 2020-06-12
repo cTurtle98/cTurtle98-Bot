@@ -18,9 +18,6 @@ PREFIX = '!'
 load_dotenv(verbose=True)
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-if DEBUG:
-    print("TOKEN= " + TOKEN)
-
 client = discord.Client()
 
 @client.event
@@ -54,10 +51,10 @@ async def on_message(message):
                 if message.content.startswith(PREFIX + 'whitelist add'):
 
                     #get the list of users to add
-                    uname = message.content.split('add', 1)[1]
+                    uname = message.content.split('add ', 1)[1]
 
                     # make the request to minecraft api
-                    r = requests.post(message.channel.name + ".root.cturtle98.com:8080/whitelist/add/?u=\"" + uname + "\"")
+                    r = requests.get("http://" + message.channel.name + ".root.cturtle98.com:8080/whitelist/add/?u=" + uname)
 
                     if r.ok:
                         await message.channel.send(message.author.mention + " those user(s) should now be on the whitelist")
@@ -65,7 +62,7 @@ async def on_message(message):
                         await message.channel.send(message.author.mention + " ERROR! Please contact Ciaran!")
                 
                 else:
-                    await message.channel.send(message.author.mention + " Usage: !whitelist add <username. OR whitelist remove <username>")
+                    await message.channel.send(message.author.mention + " Usage: !whitelist add <username. ~~ OR whitelist remove <username> ~~")
 
     else:
         return
