@@ -1,7 +1,22 @@
-FROM python:alpine AS base
+FROM ubuntu:20.04
 WORKDIR /bot
 
-RUN pip install -U discord.py
-RUN pip install -U python-dotenv
+#update os
+RUN apt update && \
+	apt upgrade -y
 
+# install python
+RUN apt install -y python3 python3-pip
+
+# install discord library build dependencies
+RUN apt install -y gcc
+
+#install python dependancies
+RUN pip3 install -U discord.py
+RUN pip3 install -U python-dotenv
+
+# copy the code into the image
+COPY /bot /bot
+
+# run the entrypoint file
 CMD python3 bot.py
