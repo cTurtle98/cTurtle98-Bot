@@ -1,5 +1,7 @@
 # bot.py
 
+DEBUG = True
+
 #os access
 import os
 
@@ -13,8 +15,11 @@ import requests
 #thing to identify commands on server
 PREFIX = '!'
 
-load_dotenv()
+load_dotenv(verbose=True)
 TOKEN = os.getenv('DISCORD_TOKEN')
+
+if DEBUG:
+    print("TOKEN= " + TOKEN)
 
 client = discord.Client()
 
@@ -25,32 +30,47 @@ async def on_ready():
 # register an event handler
 @client.event
 async def on_message(message):
+
+    if DEBUG:
+        print("--- RECEIVED MESSAGE ---")
     
     # ignore myself
-    if message.author == client.user:
+    if (message.author == client.user):
         return
 
-    # minecraft
-    if message.channel.category == "minecraft":
-	    # minecraft whitelist command
-	    if message.content.startswith(PREFIX + 'whitelist'):
-	    	# add to list
-	    	if message.content.startswith(PREFIX + 'whitelist add'):
+    if (message.content.startswith(PREFIX)):
 
-	    		#get the list of users to add
-	    		uname = message.content.split('add', 1)[1]
+        if DEBUG:
+            print("RECEIVED COMMAND")
+            print("Channel Catagory:")
+            print(message.channel.category)
 
-	    		# make the request to minecraft api
-	    		r = requests.post(message.channel + ".root.cturtle98.com:8080/whitelist/add/", u=uname)
+        # minecraft
+        if (message.channel.category == "minecraft"):
 
-	    			if r.ok:
-	    				await message.channel.send(message.author.mention + " those user(s) should now be on the whitelist")
-	    			else:
-	    				await message.channel.send(message.author.mention + " ERROR! Please contact Ciaran!")
-	    	
-	    	else:
-	    		await message.channel.send(message.author.mention + " Usage: !whitelist add <username. OR whitelist remove <username>")
+            if DEBUG:
+                print("MINERAFT COMMAND")
 
+            # minecraft whitelist command
+            if message.content.startswith(PREFIX + 'whitelist'):
+                # add to list
+                if message.content.startswith(PREFIX + 'whitelist add'):
 
+                    #get the list of users to add
+                    uname = message.content.split('add', 1)[1]
+
+                    # make the request to minecraft api
+                    r = requests.post(message.channel + ".root.cturtle98.com:8080/whitelist/add/", u=uname)
+
+                    if r.ok:
+                        await message.channel.send(message.author.mention + " those user(s) should now be on the whitelist")
+                    else:
+                        await message.channel.send(message.author.mention + " ERROR! Please contact Ciaran!")
+                
+                else:
+                    await message.channel.send(message.author.mention + " Usage: !whitelist add <username. OR whitelist remove <username>")
+
+    else:
+        return
 
 client.run(TOKEN)

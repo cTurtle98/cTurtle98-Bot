@@ -14,6 +14,7 @@ RUN apt install -y gcc
 #install python dependancies
 RUN pip3 install -U discord.py
 RUN pip3 install -U python-dotenv
+RUN pip3 install -U requests
 
 # copy the code into the image
 COPY /bot /bot
