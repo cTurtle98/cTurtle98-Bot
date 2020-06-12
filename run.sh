@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker run discord-bot --name cTurtle98-Bot
+docker run -l cTurtle98-Bot -d discord-bot
