@@ -31,9 +31,6 @@ async def on_ready():
 @client.event
 async def on_message(message):
 
-    if DEBUG:
-        print("--- RECEIVED MESSAGE ---")
-    
     # ignore myself
     if (message.author == client.user):
         return
@@ -41,15 +38,15 @@ async def on_message(message):
     if (message.content.startswith(PREFIX)):
 
         if DEBUG:
-            print("RECEIVED COMMAND")
+            print(" -- RECEIVED COMMAND -- ")
             print("Channel Catagory:")
             print(message.channel.category)
 
         # minecraft
-        if (message.channel.category == "minecraft"):
+        if (message.channel.category.name == "minecraft"):
 
             if DEBUG:
-                print("MINERAFT COMMAND")
+                print("MINECRAFT COMMAND")
 
             # minecraft whitelist command
             if message.content.startswith(PREFIX + 'whitelist'):
@@ -60,7 +57,7 @@ async def on_message(message):
                     uname = message.content.split('add', 1)[1]
 
                     # make the request to minecraft api
-                    r = requests.post(message.channel + ".root.cturtle98.com:8080/whitelist/add/", u=uname)
+                    r = requests.post(message.channel.name + ".root.cturtle98.com:8080/whitelist/add/?u=\"" + uname + "\"")
 
                     if r.ok:
                         await message.channel.send(message.author.mention + " those user(s) should now be on the whitelist")
