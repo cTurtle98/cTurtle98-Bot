@@ -1,6 +1,6 @@
 # bot.py
 
-DEBUG = True
+DEBUG = False
 
 #os access
 import os
