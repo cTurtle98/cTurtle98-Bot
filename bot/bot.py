@@ -57,7 +57,7 @@ async def on_message(message):
                     r = requests.get("http://" + message.channel.name + ".root.cturtle98.com:8080/whitelist/add/?u=" + uname)
 
                     if r.ok:
-                        await message.channel.send(message.author.mention + " those user(s) should now be on the whitelist")
+                        await message.channel.send(message.author.mention + " I tried to add those user(s) to the wishlist. Try to join now!")
                     else:
                         await message.channel.send(message.author.mention + " ERROR! Please contact Ciaran!")
                 
